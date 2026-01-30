@@ -385,10 +385,12 @@ function clearAllFilters() {
  * Update the active filters bar UI
  */
 function updateActiveFiltersUI() {
-  // Show/hide the clear filters button based on active filters
-  if (activeFilters.length > 0) {
+  // Show/hide the entire filters bar based on active filters
+  if (activeFilters.length > 0 && currentState !== AppState.RESULTS) {
+    activeFiltersBar.classList.remove('hidden');
     clearFiltersBtn.classList.remove('hidden');
   } else {
+    activeFiltersBar.classList.add('hidden');
     clearFiltersBtn.classList.add('hidden');
   }
   
@@ -497,13 +499,23 @@ function transitionTo(newState) {
     switch (newState) {
       case AppState.INITIAL:
         filterSection.classList.remove('hidden');
-        activeFiltersBar.classList.remove('hidden');
+        // Only show filters bar if filters are active
+        if (activeFilters.length > 0) {
+          activeFiltersBar.classList.remove('hidden');
+        } else {
+          activeFiltersBar.classList.add('hidden');
+        }
         hideSearchControls();
         break;
         
       case AppState.SUGGESTIONS:
         suggestionsSection.classList.add('visible');
-        activeFiltersBar.classList.remove('hidden');
+        // Only show filters bar if filters are active
+        if (activeFilters.length > 0) {
+          activeFiltersBar.classList.remove('hidden');
+        } else {
+          activeFiltersBar.classList.add('hidden');
+        }
         // Animate suggestion items
         animateSuggestionItems();
         break;
