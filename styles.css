@@ -262,6 +262,11 @@ body {
   display: flex;
 }
 
+/* Microphone button - hide when typing */
+.microphone-btn.hidden {
+  display: none;
+}
+
 /* Active search state - solid border */
 .search-input-container.active {
   border-bottom-color: var(--color-midnight-blue);

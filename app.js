@@ -42,6 +42,7 @@ const activeFiltersListWrapper = document.getElementById('activeFiltersListWrapp
 const clearFiltersBtn = document.getElementById('clearFiltersBtn');
 const filterButton = document.getElementById('filterButton');
 const filterDropdown = document.getElementById('filterDropdown');
+const microphoneBtn = document.getElementById('microphoneBtn');
 
 // Suggestion data - common search terms for NTS
 const suggestionDatabase = [
@@ -235,6 +236,7 @@ function showSearchControls() {
   searchDivider.classList.add('visible');
   clearBtn.classList.add('visible');
   searchInputContainer.classList.add('active');
+  microphoneBtn.classList.add('hidden');
 }
 
 /**
@@ -245,6 +247,7 @@ function hideSearchControls() {
   searchDivider.classList.remove('visible');
   clearBtn.classList.remove('visible');
   searchInputContainer.classList.remove('active');
+  microphoneBtn.classList.remove('hidden');
 }
 
 /**
