@@ -305,6 +305,125 @@ body {
 }
 
 /* =====================================================
+   ACTIVE FILTERS BAR
+   ===================================================== */
+.active-filters-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-12) var(--spacing-24);
+  gap: var(--spacing-24);
+  transition: opacity var(--transition-normal), max-height var(--transition-normal);
+  max-height: 64px;
+  overflow: hidden;
+}
+
+.active-filters-bar.hidden {
+  opacity: 0;
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  pointer-events: none;
+}
+
+.active-filters-left {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-24);
+  flex: 1;
+  min-width: 0;
+}
+
+.filter-label-icon {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  color: var(--color-midnight-blue);
+  font-size: var(--font-size-md);
+  flex-shrink: 0;
+}
+
+.filter-label-icon i {
+  font-size: 16px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.active-filters-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-8);
+  flex: 1;
+  min-width: 0;
+}
+
+/* Active filter pill (darker blue) */
+.active-filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  padding: var(--spacing-4) var(--spacing-16);
+  background: #c6d9f7;
+  border: none;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-md);
+  font-family: var(--font-family);
+  color: var(--color-midnight-blue);
+  cursor: default;
+  line-height: 32px;
+}
+
+.active-filter-pill .remove-filter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: var(--spacing-8);
+  cursor: pointer;
+  color: var(--color-midnight-blue);
+  font-size: 16px;
+  transition: opacity var(--transition-fast);
+}
+
+.active-filter-pill .remove-filter:hover {
+  opacity: 0.7;
+}
+
+/* Clear all filters button */
+.clear-filters-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  background: none;
+  border: none;
+  color: var(--color-midnight-blue);
+  font-size: var(--font-size-md);
+  font-family: var(--font-family);
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity var(--transition-fast);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.clear-filters-btn:hover {
+  opacity: 1;
+}
+
+.clear-filters-btn i {
+  font-size: 16px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =====================================================
    FILTER TAGS (Initial State)
    ===================================================== */
 .filter-section {
@@ -361,6 +480,10 @@ body {
   transform: translateY(0);
 }
 
+.filter-tag.hidden {
+  display: none;
+}
+
 .filter-tag .icon {
   display: none; /* Icons hidden in new design */
 }
@@ -386,16 +509,21 @@ body {
   position: relative;
 }
 
+/* Filter button container */
+.filter-button-container {
+  position: relative;
+  margin-bottom: var(--spacing-16);
+}
+
 /* Filter button */
 .filter-button {
   display: flex;
   align-items: center;
-  gap: var(--spacing-12);
+  gap: var(--spacing-8);
   padding: var(--spacing-8);
   cursor: pointer;
   color: var(--color-midnight-blue);
-  font-size: var(--font-size-input);
-  margin-bottom: var(--spacing-16);
+  font-size: var(--font-size-md);
   transition: opacity var(--transition-fast);
 }
 
@@ -406,6 +534,61 @@ body {
 .filter-button i {
   width: 16px;
   text-align: center;
+}
+
+.filter-button .filter-chevron {
+  font-size: 12px;
+  margin-left: var(--spacing-4);
+  transition: transform var(--transition-fast);
+}
+
+.filter-button.open .filter-chevron {
+  transform: rotate(180deg);
+}
+
+/* Filter dropdown */
+.filter-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--color-white);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: var(--spacing-8) 0;
+  min-width: 280px;
+  z-index: 100;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.filter-dropdown.hidden {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
+
+.filter-dropdown-item {
+  display: block;
+  width: 100%;
+  padding: var(--spacing-12) var(--spacing-16);
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: var(--font-size-md);
+  font-family: var(--font-family);
+  color: var(--color-midnight-blue);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.filter-dropdown-item:hover {
+  background: var(--color-blue-100);
+}
+
+.filter-dropdown-item.selected {
+  background: #c6d9f7;
+  font-weight: 500;
 }
 
 /* Two-column layout for suggestions */

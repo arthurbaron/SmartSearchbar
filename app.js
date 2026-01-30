@@ -14,6 +14,19 @@ let currentState = AppState.INITIAL;
 let typingTimer = null;
 const TYPING_DELAY = 100; // ms before showing enter badge
 
+// Active filters state
+let activeFilters = [];
+
+// All available filters
+const allFilters = [
+  'Informatie over de donatieprocedure',
+  'Protocol informatie',
+  'Onderzoeksinformatie',
+  'PDF',
+  'Illustratie of infographic',
+  'Scholing en training'
+];
+
 // DOM Elements
 const searchInput = document.getElementById('searchInput');
 const searchInputContainer = document.getElementById('searchInputContainer');
@@ -23,6 +36,11 @@ const clearBtn = document.getElementById('clearBtn');
 const filterSection = document.getElementById('filterSection');
 const suggestionsSection = document.getElementById('suggestionsSection');
 const resultsSection = document.getElementById('resultsSection');
+const activeFiltersBar = document.getElementById('activeFiltersBar');
+const activeFiltersList = document.getElementById('activeFiltersList');
+const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+const filterButton = document.getElementById('filterButton');
+const filterDropdown = document.getElementById('filterDropdown');
 
 // Suggestion data - common search terms for NTS
 const suggestionDatabase = [
@@ -69,8 +87,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initSearchInput();
   initSuggestions();
   initFilterTags();
+  initFilterDropdown();
   initKeyboardNavigation();
   initClearButton();
+  initActiveFilters();
   
   // Auto-focus the search input so user can type immediately
   searchInput.focus();
@@ -282,16 +302,143 @@ function initFilterTags() {
   
   filterTags.forEach(tag => {
     tag.addEventListener('click', () => {
-      // Toggle selected state
-      tag.classList.toggle('selected');
-      
-      // Visual feedback
-      const icon = tag.querySelector('.icon');
-      if (icon && icon.classList.contains('fa-circle')) {
-        icon.classList.toggle('fa-circle');
-        icon.classList.toggle('fa-circle-check');
-      }
+      const filterName = tag.querySelector('span').textContent;
+      addFilter(filterName);
     });
+  });
+}
+
+/**
+ * Filter Dropdown Handler
+ */
+function initFilterDropdown() {
+  // Toggle dropdown on filter button click
+  filterButton.addEventListener('click', (e) => {
+    e.stopPropagation();
+    filterDropdown.classList.toggle('hidden');
+    filterButton.classList.toggle('open');
+  });
+  
+  // Handle dropdown item clicks
+  const dropdownItems = document.querySelectorAll('.filter-dropdown-item');
+  dropdownItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const filterName = item.dataset.filter;
+      addFilter(filterName);
+      filterDropdown.classList.add('hidden');
+      filterButton.classList.remove('open');
+    });
+  });
+  
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!filterButton.contains(e.target) && !filterDropdown.contains(e.target)) {
+      filterDropdown.classList.add('hidden');
+      filterButton.classList.remove('open');
+    }
+  });
+}
+
+/**
+ * Initialize active filters bar
+ */
+function initActiveFilters() {
+  // Clear all filters button
+  clearFiltersBtn.addEventListener('click', () => {
+    clearAllFilters();
+  });
+}
+
+/**
+ * Add a filter
+ */
+function addFilter(filterName) {
+  if (activeFilters.includes(filterName)) return;
+  
+  activeFilters.push(filterName);
+  updateActiveFiltersUI();
+  updateFilterTagsVisibility();
+  updateDropdownItemsState();
+}
+
+/**
+ * Remove a filter
+ */
+function removeFilter(filterName) {
+  activeFilters = activeFilters.filter(f => f !== filterName);
+  updateActiveFiltersUI();
+  updateFilterTagsVisibility();
+  updateDropdownItemsState();
+}
+
+/**
+ * Clear all filters
+ */
+function clearAllFilters() {
+  activeFilters = [];
+  updateActiveFiltersUI();
+  updateFilterTagsVisibility();
+  updateDropdownItemsState();
+}
+
+/**
+ * Update the active filters bar UI
+ */
+function updateActiveFiltersUI() {
+  // Show/hide the filters bar
+  if (activeFilters.length > 0) {
+    activeFiltersBar.classList.remove('hidden');
+  } else {
+    activeFiltersBar.classList.add('hidden');
+  }
+  
+  // Render active filter pills
+  activeFiltersList.innerHTML = activeFilters.map(filter => `
+    <div class="active-filter-pill" data-filter="${filter}">
+      <span>${filter}</span>
+      <span class="remove-filter" data-filter="${filter}">
+        <i class="fa-solid fa-xmark"></i>
+      </span>
+    </div>
+  `).join('');
+  
+  // Add click handlers for remove buttons
+  activeFiltersList.querySelectorAll('.remove-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      removeFilter(btn.dataset.filter);
+    });
+  });
+}
+
+/**
+ * Update filter tags visibility (hide selected ones)
+ */
+function updateFilterTagsVisibility() {
+  const filterTags = document.querySelectorAll('.filter-tag');
+  
+  filterTags.forEach(tag => {
+    const filterName = tag.querySelector('span').textContent;
+    if (activeFilters.includes(filterName)) {
+      tag.classList.add('hidden');
+    } else {
+      tag.classList.remove('hidden');
+    }
+  });
+}
+
+/**
+ * Update dropdown items state (mark selected ones)
+ */
+function updateDropdownItemsState() {
+  const dropdownItems = document.querySelectorAll('.filter-dropdown-item');
+  
+  dropdownItems.forEach(item => {
+    const filterName = item.dataset.filter;
+    if (activeFilters.includes(filterName)) {
+      item.classList.add('selected');
+    } else {
+      item.classList.remove('selected');
+    }
   });
 }
 

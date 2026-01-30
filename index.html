@@ -33,6 +33,10 @@
           </div>
 
           <div class="search-actions">
+            <!-- Microphone icon -->
+            <button class="action-btn microphone-btn" aria-label="Voice search" id="microphoneBtn">
+              <i class="fa-solid fa-microphone"></i>
+            </button>
             <!-- Enter badge (appears while typing) -->
             <div class="enter-badge" id="enterBadge">
               <i class="fa-solid fa-arrow-turn-down fa-rotate-90"></i>
@@ -44,6 +48,23 @@
             </button>
           </div>
         </div>
+      </div>
+
+      <!-- Active Filters Bar (appears when filters are selected) -->
+      <div class="active-filters-bar hidden" id="activeFiltersBar">
+        <div class="active-filters-left">
+          <span class="filter-label-icon">
+            <i class="fa-solid fa-filter"></i>
+            <span>Filter</span>
+          </span>
+          <div class="active-filters-list" id="activeFiltersList">
+            <!-- Active filter pills will be inserted here -->
+          </div>
+        </div>
+        <button class="clear-filters-btn" id="clearFiltersBtn">
+          <i class="fa-solid fa-xmark"></i>
+          <span>Filters uitzetten</span>
+        </button>
       </div>
 
       <!-- SCREEN 1: Filter Tags (Initial State) -->
@@ -73,10 +94,35 @@
 
       <!-- SCREEN 2: Suggestions Dropdown -->
       <div class="suggestions-section" id="suggestionsSection">
-        <!-- Filter button -->
-        <div class="filter-button" id="filterButton">
-          <i class="fa-solid fa-bars-filter"></i>
-          <span>Filter</span>
+        <!-- Filter button with dropdown -->
+        <div class="filter-button-container">
+          <div class="filter-button" id="filterButton">
+            <i class="fa-solid fa-filter"></i>
+            <span>Filter</span>
+            <i class="fa-solid fa-chevron-down filter-chevron"></i>
+          </div>
+          
+          <!-- Filter dropdown -->
+          <div class="filter-dropdown hidden" id="filterDropdown">
+            <button class="filter-dropdown-item" data-filter="Informatie over de donatieprocedure">
+              Informatie over de donatieprocedure
+            </button>
+            <button class="filter-dropdown-item" data-filter="Protocol informatie">
+              Protocol informatie
+            </button>
+            <button class="filter-dropdown-item" data-filter="Onderzoeksinformatie">
+              Onderzoeksinformatie
+            </button>
+            <button class="filter-dropdown-item" data-filter="PDF">
+              PDF
+            </button>
+            <button class="filter-dropdown-item" data-filter="Illustratie of infographic">
+              Illustratie of infographic
+            </button>
+            <button class="filter-dropdown-item" data-filter="Scholing en training">
+              Scholing en training
+            </button>
+          </div>
         </div>
 
         <!-- Suggestions -->
