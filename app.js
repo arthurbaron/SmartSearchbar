@@ -385,12 +385,24 @@ function clearAllFilters() {
  * Update the active filters bar UI
  */
 function updateActiveFiltersUI() {
-  // Show/hide the entire filters bar based on active filters
-  if (activeFilters.length > 0 && currentState !== AppState.RESULTS) {
+  // Show/hide the entire filters bar based on state and active filters
+  // - Initial state: only show if filters are active
+  // - Suggestions state: always show (filter tags are hidden)
+  // - Results state: always hide
+  if (currentState === AppState.RESULTS) {
+    activeFiltersBar.classList.add('hidden');
+  } else if (currentState === AppState.SUGGESTIONS) {
     activeFiltersBar.classList.remove('hidden');
-    clearFiltersBtn.classList.remove('hidden');
+  } else if (activeFilters.length > 0) {
+    activeFiltersBar.classList.remove('hidden');
   } else {
     activeFiltersBar.classList.add('hidden');
+  }
+  
+  // Show/hide clear filters button based on active filters
+  if (activeFilters.length > 0) {
+    clearFiltersBtn.classList.remove('hidden');
+  } else {
     clearFiltersBtn.classList.add('hidden');
   }
   
@@ -499,7 +511,7 @@ function transitionTo(newState) {
     switch (newState) {
       case AppState.INITIAL:
         filterSection.classList.remove('hidden');
-        // Only show filters bar if filters are active
+        // Only show filters bar if filters are active (filter tags are visible otherwise)
         if (activeFilters.length > 0) {
           activeFiltersBar.classList.remove('hidden');
         } else {
@@ -510,12 +522,8 @@ function transitionTo(newState) {
         
       case AppState.SUGGESTIONS:
         suggestionsSection.classList.add('visible');
-        // Only show filters bar if filters are active
-        if (activeFilters.length > 0) {
-          activeFiltersBar.classList.remove('hidden');
-        } else {
-          activeFiltersBar.classList.add('hidden');
-        }
+        // Always show filters bar in suggestions (filter tags are hidden)
+        activeFiltersBar.classList.remove('hidden');
         // Animate suggestion items
         animateSuggestionItems();
         break;
