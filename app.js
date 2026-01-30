@@ -12,15 +12,57 @@ const AppState = {
 
 let currentState = AppState.INITIAL;
 let typingTimer = null;
-const TYPING_DELAY = 300; // ms before showing "Enter" hint
+const TYPING_DELAY = 100; // ms before showing enter badge
 
 // DOM Elements
 const searchInput = document.getElementById('searchInput');
-const enterHint = document.getElementById('enterHint');
+const searchInputContainer = document.getElementById('searchInputContainer');
+const enterBadge = document.getElementById('enterBadge');
+const searchDivider = document.getElementById('searchDivider');
+const clearBtn = document.getElementById('clearBtn');
 const filterSection = document.getElementById('filterSection');
 const suggestionsSection = document.getElementById('suggestionsSection');
 const resultsSection = document.getElementById('resultsSection');
-const searchBtn = document.getElementById('searchBtn');
+
+// Suggestion data - common search terms for NTS
+const suggestionDatabase = [
+  'Donatie bij leven',
+  'Donatie bij overlijden', 
+  'Donatie aanmelden',
+  'Donatieprocedure organen',
+  'Donatieprocedure weefsels',
+  'Donor worden',
+  'Donorregister',
+  'Donorformulier',
+  'Leverdonatie',
+  'Leverdonatie bij leven',
+  'Nierdonatie',
+  'Nierdonatie bij leven',
+  'Orgaandonatie',
+  'Orgaantransplantatie',
+  'Protocol donatie',
+  'Protocol orgaandonatie',
+  'Transplantatie procedure',
+  'Transplantatiecentrum',
+  'Wachtlijst transplantatie',
+  'Weefseldonatie',
+  'NTS contact',
+  'NTS bellen',
+  'Voorwaarden donatie',
+  'Kosten transplantatie',
+  'Hersendood',
+  'Bloedtransfusie',
+  'Modelprotocol',
+  'Scholing NTS',
+  'Cross-over programma'
+];
+
+// Quick links data
+const quickLinksDatabase = [
+  { text: 'Veelgestelde vragen over {query}', icon: 'fa-link' },
+  { text: '{query}', icon: 'fa-link' },
+  { text: 'Voor- en nadelen van {query}', icon: 'fa-link' }
+];
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -28,11 +70,15 @@ document.addEventListener('DOMContentLoaded', () => {
   initSuggestions();
   initFilterTags();
   initKeyboardNavigation();
+  initClearButton();
+  
+  // Auto-focus the search input so user can type immediately
+  searchInput.focus();
 });
 
 /**
  * Search Input Handler
- * Shows suggestions and "Enter" hint while typing
+ * Shows suggestions and enter badge while typing
  */
 function initSearchInput() {
   searchInput.addEventListener('input', (e) => {
@@ -47,13 +93,16 @@ function initSearchInput() {
         transitionTo(AppState.SUGGESTIONS);
       }
       
-      // Show "Enter" hint after brief delay
+      // Update suggestions based on input
+      updateSuggestions(value);
+      
+      // Show enter badge and search controls after brief delay
       typingTimer = setTimeout(() => {
-        enterHint.classList.add('visible');
+        showSearchControls();
       }, TYPING_DELAY);
     } else {
       // Return to initial state
-      enterHint.classList.remove('visible');
+      hideSearchControls();
       if (currentState === AppState.SUGGESTIONS) {
         transitionTo(AppState.INITIAL);
       }
@@ -64,7 +113,128 @@ function initSearchInput() {
   searchInput.addEventListener('focus', () => {
     if (searchInput.value.trim().length > 0 && currentState === AppState.INITIAL) {
       transitionTo(AppState.SUGGESTIONS);
+      updateSuggestions(searchInput.value.trim());
+      showSearchControls();
     }
+  });
+}
+
+/**
+ * Update suggestions based on user input
+ */
+function updateSuggestions(query) {
+  // Always create suggestions with user's input + suffix
+  const suggestions = [
+    { text: `${query} leven`, suffix: 'leven' },
+    { text: `${query} overlijden`, suffix: 'overlijden' },
+    { text: `${query} aanrijding`, suffix: 'aanrijding' }
+  ];
+  
+  // Update suggestion items in DOM
+  const firstSuggestionsRow = suggestionsSection.querySelectorAll('.suggestions-row')[0];
+  if (firstSuggestionsRow) {
+    const contentCol = firstSuggestionsRow.querySelector('.suggestions-content-col');
+    if (contentCol) {
+      contentCol.innerHTML = suggestions.map(item => {
+        return `<div class="suggestion-item" data-query="${item.text}"><strong>${query}</strong> ${item.suffix}</div>`;
+      }).join('');
+      
+      // Re-attach click handlers
+      contentCol.querySelectorAll('.suggestion-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const selectedQuery = item.dataset.query;
+          searchInput.value = selectedQuery;
+          transitionTo(AppState.RESULTS);
+        });
+      });
+    }
+  }
+  
+  // Update quick links
+  updateQuickLinks(query);
+}
+
+/**
+ * Highlight matching text in suggestion
+ */
+function highlightMatch(text, query) {
+  const lowerText = text.toLowerCase();
+  const lowerQuery = query.toLowerCase();
+  const index = lowerText.indexOf(lowerQuery);
+  
+  if (index === -1) {
+    return text;
+  }
+  
+  const before = text.slice(0, index);
+  const match = text.slice(index, index + query.length);
+  const after = text.slice(index + query.length);
+  
+  return `${before}<strong>${match}</strong>${after}`;
+}
+
+/**
+ * Update quick links based on query
+ */
+function updateQuickLinks(query) {
+  const quickLinksRow = suggestionsSection.querySelectorAll('.suggestions-row')[1];
+  if (quickLinksRow) {
+    const contentCol = quickLinksRow.querySelector('.suggestions-content-col');
+    if (contentCol) {
+      const links = [
+        `Veelgestelde vragen over <strong>${query}</strong>`,
+        `<strong>${query}</strong>`,
+        `Voor- en nadelen van <strong>${query}</strong>`
+      ];
+      
+      contentCol.innerHTML = links.map(linkText => `
+        <a href="#" class="quick-link-item">
+          <i class="fa-solid fa-link link-icon"></i>
+          <span>${linkText}</span>
+          <i class="fa-solid fa-arrow-right arrow-icon"></i>
+        </a>
+      `).join('');
+      
+      // Re-attach click handlers
+      contentCol.querySelectorAll('.quick-link-item').forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          transitionTo(AppState.RESULTS);
+        });
+      });
+    }
+  }
+}
+
+/**
+ * Show search controls (enter badge, divider, close button)
+ */
+function showSearchControls() {
+  enterBadge.classList.add('visible');
+  searchDivider.classList.add('visible');
+  clearBtn.classList.add('visible');
+  searchInputContainer.classList.add('active');
+}
+
+/**
+ * Hide search controls
+ */
+function hideSearchControls() {
+  enterBadge.classList.remove('visible');
+  searchDivider.classList.remove('visible');
+  clearBtn.classList.remove('visible');
+  searchInputContainer.classList.remove('active');
+}
+
+/**
+ * Clear button handler
+ */
+function initClearButton() {
+  clearBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    hideSearchControls();
+    transitionTo(AppState.INITIAL);
+    searchInput.focus();
   });
 }
 
@@ -76,7 +246,7 @@ function initSuggestions() {
   
   suggestionItems.forEach((item, index) => {
     item.addEventListener('click', () => {
-      const query = item.dataset.query || item.textContent;
+      const query = item.dataset.query || item.textContent.trim();
       searchInput.value = query;
       transitionTo(AppState.RESULTS);
     });
@@ -85,13 +255,23 @@ function initSuggestions() {
     item.classList.add(`stagger-${index + 1}`);
   });
   
-  // Quick links
-  const quickLinks = document.querySelectorAll('.quick-link');
-  quickLinks.forEach(link => {
-    link.addEventListener('click', () => {
+  // Quick link items
+  const quickLinkItems = document.querySelectorAll('.quick-link-item');
+  quickLinkItems.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
       transitionTo(AppState.RESULTS);
     });
   });
+  
+  // Filter button
+  const filterButton = document.getElementById('filterButton');
+  if (filterButton) {
+    filterButton.addEventListener('click', () => {
+      // Could open a filter modal or expand filter options
+      console.log('Filter button clicked');
+    });
+  }
 }
 
 /**
@@ -132,14 +312,14 @@ function initKeyboardNavigation() {
         transitionTo(AppState.SUGGESTIONS);
       } else if (currentState === AppState.SUGGESTIONS) {
         searchInput.value = '';
-        enterHint.classList.remove('visible');
+        hideSearchControls();
         transitionTo(AppState.INITIAL);
       }
     }
   });
   
-  // Search button click
-  searchBtn.addEventListener('click', () => {
+  // Enter badge click
+  enterBadge.addEventListener('click', () => {
     if (searchInput.value.trim().length > 0) {
       transitionTo(AppState.RESULTS);
     }
@@ -170,7 +350,7 @@ function transitionTo(newState) {
     switch (newState) {
       case AppState.INITIAL:
         filterSection.classList.remove('hidden');
-        enterHint.classList.remove('visible');
+        hideSearchControls();
         break;
         
       case AppState.SUGGESTIONS:
@@ -181,7 +361,7 @@ function transitionTo(newState) {
         
       case AppState.RESULTS:
         resultsSection.classList.add('visible');
-        enterHint.classList.remove('visible');
+        hideSearchControls();
         // Animate result sections
         animateResults();
         break;
@@ -195,7 +375,7 @@ function transitionTo(newState) {
  * Animate suggestion items with stagger effect
  */
 function animateSuggestionItems() {
-  const items = suggestionsSection.querySelectorAll('.suggestion-item, .quick-link');
+  const items = suggestionsSection.querySelectorAll('.suggestion-item, .quick-link-item');
   items.forEach((item, index) => {
     item.style.opacity = '0';
     item.style.transform = 'translateY(10px)';
@@ -238,7 +418,7 @@ function animateResults() {
  */
 function resetDemo() {
   searchInput.value = '';
-  enterHint.classList.remove('visible');
+  hideSearchControls();
   transitionTo(AppState.INITIAL);
 }
 

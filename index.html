@@ -7,11 +7,6 @@
   <title>NTS AI Zoekbalk - Prototype</title>
   <meta name="description" content="AI-powered search interface prototype for NTS">
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -25,30 +20,27 @@
 
       <!-- Search Bar (always visible) -->
       <div class="search-bar">
-        <span class="filter-icon" aria-label="Filter">
-          <i class="fa-solid fa-filter"></i>
-        </span>
+        <div class="search-input-container" id="searchInputContainer">
+          <!-- Search Icon -->
+          <span class="search-icon">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </span>
 
-        <div class="search-input-container">
           <div class="search-input-wrapper">
-            <input type="text" class="search-input" id="searchInput" placeholder="Zoek naar uw vraag of onderwerp..."
+            <input type="text" class="search-input" id="searchInput"
+              placeholder="Zoek hier naar pagina of stel een specifieke vraag, zoals 'wanneer kan ik het NTS bellen?'"
               autocomplete="off">
-
-            <!-- Enter hint (appears while typing) -->
-            <div class="enter-hint" id="enterHint">
-              <kbd>↵</kbd>
-              <span>Enter voor alle resultaten</span>
-            </div>
           </div>
 
-          <div class="search-divider"></div>
-
           <div class="search-actions">
-            <button class="action-btn" aria-label="Voice search">
-              <i class="fa-solid fa-microphone"></i>
-            </button>
-            <button class="action-btn" aria-label="Search" id="searchBtn">
-              <i class="fa-solid fa-magnifying-glass"></i>
+            <!-- Enter badge (appears while typing) -->
+            <div class="enter-badge" id="enterBadge">
+              <i class="fa-solid fa-arrow-turn-down fa-rotate-90"></i>
+              <span>Enter</span>
+            </div>
+            <span class="search-divider" id="searchDivider"></span>
+            <button class="action-btn close-btn" aria-label="Clear search" id="clearBtn">
+              <i class="fa-solid fa-xmark"></i>
             </button>
           </div>
         </div>
@@ -59,64 +51,87 @@
         <p class="filter-label">Specificeer wat je zoekt, voor betere resultaten</p>
         <div class="filter-tags">
           <button class="filter-tag">
-            <i class="icon fa-regular fa-circle"></i>
-            <span>Informatie over donorkinderen</span>
+            <span>Informatie over de donatieprocedure</span>
           </button>
           <button class="filter-tag">
-            <i class="icon fa-regular fa-circle"></i>
-            <span>Principieel afstandelijk</span>
+            <span>Protocol informatie</span>
           </button>
           <button class="filter-tag">
-            <i class="icon fa-regular fa-circle"></i>
-            <span>Gezondheidszaken en nazorg</span>
+            <span>Onderzoeksinformatie</span>
           </button>
-        </div>
-        <div class="filter-tags" style="margin-top: var(--spacing-8);">
           <button class="filter-tag">
-            <i class="icon fa-solid fa-sliders"></i>
             <span>PDF</span>
           </button>
           <button class="filter-tag">
-            <span>Schrijfstijl toon&shy;zetting</span>
+            <span>Illustratie of infographic</span>
+          </button>
+          <button class="filter-tag">
+            <span>Scholing en training</span>
           </button>
         </div>
       </div>
 
       <!-- SCREEN 2: Suggestions Dropdown -->
       <div class="suggestions-section" id="suggestionsSection">
-        <div class="suggestions-group">
-          <p class="suggestions-label">Suggesties</p>
-          <div class="suggestion-item" data-query="Simulatie NL leveren">
-            Simulatie NL <strong>leveren</strong>
+        <!-- Filter button -->
+        <div class="filter-button" id="filterButton">
+          <i class="fa-solid fa-bars-filter"></i>
+          <span>Filter</span>
+        </div>
+
+        <!-- Suggestions -->
+        <div class="suggestions-row">
+          <div class="suggestions-label-col">
+            <span class="section-label">Suggesties</span>
           </div>
-          <div class="suggestion-item" data-query="Simulatie NL overdracht">
-            Simulatie NL <strong>overdracht</strong>
-          </div>
-          <div class="suggestion-item" data-query="Simulatie bloedtransfusie">
-            Simulatie <strong>bloedtransfusie</strong>
+          <div class="suggestions-content-col">
+            <div class="suggestion-item" data-query="Donatie bij leven">
+              <strong>Donatie bij</strong> leven
+            </div>
+            <div class="suggestion-item" data-query="Donatie bij overlijden">
+              <strong>Donatie bij</strong> overlijden
+            </div>
+            <div class="suggestion-item" data-query="Donatie bij aanrijding">
+              <strong>Donatie bij</strong> aanrijding
+            </div>
           </div>
         </div>
 
-        <div class="suggestions-group">
-          <p class="suggestions-label">Quick links</p>
-          <div class="quick-links">
-            <button class="quick-link">
-              <span class="icon">→</span>
-              <span>Veelgestelde vragen</span>
-              <span>over donatie lichten</span>
-              <span class="arrow">→</span>
-            </button>
-            <button class="quick-link">
-              <span class="icon">★</span>
-              <span>Donatie bij leven</span>
-              <span class="arrow">→</span>
-            </button>
-            <button class="quick-link">
-              <span class="icon">🔗</span>
-              <span>Over serviceniveau en donatie lichten</span>
-              <span class="arrow">→</span>
-            </button>
+        <!-- Divider -->
+        <div class="suggestions-divider"></div>
+
+        <!-- Quick links -->
+        <div class="suggestions-row">
+          <div class="suggestions-label-col">
+            <span class="section-label">Quick links</span>
           </div>
+          <div class="suggestions-content-col">
+            <a href="#" class="quick-link-item">
+              <i class="fa-solid fa-link link-icon"></i>
+              <span>Veelgestelde vragen over <strong>donatie bij</strong> leven</span>
+              <i class="fa-solid fa-arrow-right arrow-icon"></i>
+            </a>
+            <a href="#" class="quick-link-item">
+              <i class="fa-solid fa-link link-icon"></i>
+              <span><strong>Donatie bij</strong> leven</span>
+              <i class="fa-solid fa-arrow-right arrow-icon"></i>
+            </a>
+            <a href="#" class="quick-link-item">
+              <i class="fa-solid fa-link link-icon"></i>
+              <span>Voor-en nadelen van <strong>donatie bij</strong> leven</span>
+              <i class="fa-solid fa-arrow-right arrow-icon"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="suggestions-footer">
+          <span>Druk op</span>
+          <div class="enter-badge-footer">
+            <i class="fa-solid fa-arrow-turn-down fa-rotate-90"></i>
+            <span>Enter</span>
+          </div>
+          <span>voor alle resultaten</span>
         </div>
       </div>
 
@@ -125,44 +140,41 @@
         <div class="main-result">
           <h1 class="result-title">'Wanneer mag een levend persoon een lever doneren?'</h1>
           <p class="result-intro">
-            Het volgende is op de NTS terug te vinden over wanneer iemand een lever mag doneren.
-            Dit zijn wel algemene indicaties, deze gelden dus primair als landelijk kader.
+            Het volgende is op de NTS terug te vinden over wanneer iemand een lever mag doneren. Dit zijn wel algemene indicaties, deze gelden dus primair als landelijk kader.
           </p>
 
           <div class="ai-answer">
             <p>
-              Je kunt niet zomaar een deel van je lever geven aan een ander. Er zijn wettelijke regels om jou te
-              beschermen
-              en zorgen voor een veilige en verantwoorde levertransplantatie. En je krijgt onderzoeken om te kijken of
-              je
-              lichamelijk gezond genoeg bent, en of je de donatie psychisch goed aankunt.
+              Je kunt niet zomaar een deel van je lever geven aan een ander. Er zijn wettelijke regels om jou te beschermen en zorgen voor een veilige en verantwoorde levertransplantatie. En je krijgt onderzoeken om te kijken of je lichamelijk gezond genoeg bent, en of je de donatie psychisch goed aankan.
             </p>
 
             <h4>Algemene voorwaarden</h4>
             <ul>
               <li>Je bent 18 jaar of ouder.</li>
               <li>Je kunt zelf goed uitleggen wat je wilt.</li>
-              <li>Je hebt vrijwillig besloten om een deel van je lever te geven. Niemand heeft je onder druk gezet en je
-                krijgt er geen geld of cadeaus voor.</li>
+              <li>Je hebt vrijwillig besloten om een deel van je lever te geven. Niemand heeft je onder druk gezet en je krijgt er geen geld of cadeaus voor.</li>
               <li>Je bent gezond genoeg en in goede conditie.</li>
               <li>Je bent niet verslaafd aan alcohol of drugs.</li>
               <li>Je hebt geen leverziekte, bloedziekte, nierziekte of problemen met je bloedstolling.</li>
               <li>Je hebt geen (erfelijke) ziekte waardoor je lever later misschien slechter gaat werken.</li>
               <li>Je bent niet zwanger.</li>
             </ul>
+
+            <!-- Highlighted Card inside AI answer -->
+            <div class="highlighted-card">
+              <div class="card-header">
+                <span class="card-icon"><i class="fa-solid fa-link"></i></span>
+                <span class="card-title">Leverdonatie bij leven</span>
+              </div>
+              <p class="card-description">
+                Informatie voor mensen die overwegen bij leven een een deel van hun lever te doneren.
+              </p>
+            </div>
           </div>
         </div>
 
-        <!-- Highlighted Card -->
-        <div class="highlighted-card">
-          <div class="card-header">
-            <span class="card-icon"><i class="fa-solid fa-link"></i></span>
-            <span class="card-title">Leverdonatie bij leven</span>
-          </div>
-          <p class="card-description">
-            Informatie voor mensen die overwegen bij leven een een deel van hun lever te doneren.
-          </p>
-        </div>
+        <!-- Divider -->
+        <div class="results-divider"></div>
 
         <!-- Related Results -->
         <div class="related-section">
@@ -174,9 +186,7 @@
               <span class="card-title">Samenwerken en de NTS</span>
             </div>
             <p class="card-description">
-              Op deze pagina vind je een overzicht van de belangrijkste protocollen. Lees meer over het
-              cross-overprogramma
-              en bekijk welke voorlichting, vergoedingen en scholing er zijn vanuit de NTS.
+              Op deze pagina vind je een overzicht van de belangrijkste protocollen. Lees meer over het cross-overprogramma en bekijk welke voorlichting, vergoedingen en scholing er zijn vanuit de NTS.
             </p>
           </div>
 
@@ -186,25 +196,30 @@
               <span class="card-title">Samenwerken en de NTS</span>
             </div>
             <p class="card-description">
-              Op deze pagina vind je een overzicht van de belangrijkste protocollen. Lees meer over het
-              cross-overprogramma
-              en bekijk welke voorlichting, vergoedingen en scholing er zijn vanuit de NTS.
+              Op deze pagina vind je een overzicht van de belangrijkste protocollen. Lees meer over het cross-overprogramma en bekijk welke voorlichting, vergoedingen en scholing er zijn vanuit de NTS.
             </p>
           </div>
         </div>
+
+        <!-- Divider -->
+        <div class="results-divider"></div>
 
         <!-- Bottom Search -->
         <div class="bottom-search">
           <p class="bottom-search-label">Is dit niet wat je zoekt?</p>
           <div class="bottom-search-bar">
             <span>Specificeer je zoekopdracht</span>
-            <input type="text" class="bottom-search-input" placeholder="Bijvoorbeeld: 'Ik zoek een pdf met ...'">
-            <button class="action-btn" aria-label="Voice search">
-              <i class="fa-solid fa-microphone"></i>
-            </button>
-            <button class="action-btn" aria-label="Search">
-              <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
+            <div class="bottom-search-input-wrapper">
+              <input type="text" class="bottom-search-input" placeholder="'ik zoek een pdf met ...'">
+              <div class="bottom-search-actions">
+                <button class="action-btn" aria-label="Voice search">
+                  <i class="fa-solid fa-microphone"></i>
+                </button>
+                <button class="action-btn" aria-label="Search">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
