@@ -253,17 +253,17 @@ body {
   display: block;
 }
 
-/* Close button */
-.close-btn {
+/* Close button - hidden by default, more specific to override .action-btn */
+.action-btn.close-btn {
   display: none;
 }
 
-.close-btn.visible {
+.action-btn.close-btn.visible {
   display: flex;
 }
 
 /* Microphone button - hide when typing */
-.microphone-btn.hidden {
+.action-btn.microphone-btn.hidden {
   display: none;
 }
 
