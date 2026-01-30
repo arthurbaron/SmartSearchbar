@@ -38,6 +38,7 @@ const suggestionsSection = document.getElementById('suggestionsSection');
 const resultsSection = document.getElementById('resultsSection');
 const activeFiltersBar = document.getElementById('activeFiltersBar');
 const activeFiltersList = document.getElementById('activeFiltersList');
+const activeFiltersListWrapper = document.getElementById('activeFiltersListWrapper');
 const clearFiltersBtn = document.getElementById('clearFiltersBtn');
 const filterButton = document.getElementById('filterButton');
 const filterDropdown = document.getElementById('filterDropdown');
@@ -347,6 +348,36 @@ function initActiveFilters() {
   clearFiltersBtn.addEventListener('click', () => {
     clearAllFilters();
   });
+  
+  // Update gradient on scroll
+  activeFiltersList.addEventListener('scroll', () => {
+    updateScrollGradient();
+  });
+  
+  // Update gradient on window resize
+  window.addEventListener('resize', () => {
+    checkFiltersOverflow();
+  });
+}
+
+/**
+ * Update gradient visibility based on scroll position
+ */
+function updateScrollGradient() {
+  if (!activeFiltersList || !activeFiltersListWrapper) return;
+  
+  const scrollLeft = activeFiltersList.scrollLeft;
+  const scrollWidth = activeFiltersList.scrollWidth;
+  const clientWidth = activeFiltersListWrapper.clientWidth;
+  
+  // Hide gradient if scrolled to the end (with small buffer)
+  const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 10;
+  
+  if (isAtEnd) {
+    activeFiltersListWrapper.classList.remove('has-overflow');
+  } else if (scrollWidth > clientWidth) {
+    activeFiltersListWrapper.classList.add('has-overflow');
+  }
 }
 
 /**
@@ -422,6 +453,26 @@ function updateActiveFiltersUI() {
       removeFilter(btn.dataset.filter);
     });
   });
+  
+  // Check for overflow and show/hide gradient
+  checkFiltersOverflow();
+}
+
+/**
+ * Check if the filters list is overflowing and show gradient
+ */
+function checkFiltersOverflow() {
+  // Small timeout to allow DOM to update
+  setTimeout(() => {
+    if (activeFiltersList && activeFiltersListWrapper) {
+      const isOverflowing = activeFiltersList.scrollWidth > activeFiltersListWrapper.clientWidth;
+      if (isOverflowing) {
+        activeFiltersListWrapper.classList.add('has-overflow');
+      } else {
+        activeFiltersListWrapper.classList.remove('has-overflow');
+      }
+    }
+  }, 10);
 }
 
 /**
