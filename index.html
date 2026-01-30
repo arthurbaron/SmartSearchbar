@@ -50,18 +50,45 @@
         </div>
       </div>
 
-      <!-- Active Filters Bar (appears when filters are selected) -->
-      <div class="active-filters-bar hidden" id="activeFiltersBar">
+      <!-- Active Filters Bar (always visible when in initial/suggestions state) -->
+      <div class="active-filters-bar" id="activeFiltersBar">
         <div class="active-filters-left">
-          <span class="filter-label-icon">
-            <i class="fa-solid fa-filter"></i>
-            <span>Filter</span>
-          </span>
+          <!-- Filter button with dropdown -->
+          <div class="filter-button-container" id="filterButtonContainer">
+            <div class="filter-button" id="filterButton">
+              <i class="fa-solid fa-filter"></i>
+              <span>Filter</span>
+              <i class="fa-solid fa-chevron-down filter-chevron"></i>
+            </div>
+            
+            <!-- Filter dropdown -->
+            <div class="filter-dropdown hidden" id="filterDropdown">
+              <button class="filter-dropdown-item" data-filter="Informatie over de donatieprocedure">
+                Informatie over de donatieprocedure
+              </button>
+              <button class="filter-dropdown-item" data-filter="Protocol informatie">
+                Protocol informatie
+              </button>
+              <button class="filter-dropdown-item" data-filter="Onderzoeksinformatie">
+                Onderzoeksinformatie
+              </button>
+              <button class="filter-dropdown-item" data-filter="PDF">
+                PDF
+              </button>
+              <button class="filter-dropdown-item" data-filter="Illustratie of infographic">
+                Illustratie of infographic
+              </button>
+              <button class="filter-dropdown-item" data-filter="Scholing en training">
+                Scholing en training
+              </button>
+            </div>
+          </div>
+          
           <div class="active-filters-list" id="activeFiltersList">
             <!-- Active filter pills will be inserted here -->
           </div>
         </div>
-        <button class="clear-filters-btn" id="clearFiltersBtn">
+        <button class="clear-filters-btn hidden" id="clearFiltersBtn">
           <i class="fa-solid fa-xmark"></i>
           <span>Filters uitzetten</span>
         </button>
@@ -94,37 +121,6 @@
 
       <!-- SCREEN 2: Suggestions Dropdown -->
       <div class="suggestions-section" id="suggestionsSection">
-        <!-- Filter button with dropdown -->
-        <div class="filter-button-container">
-          <div class="filter-button" id="filterButton">
-            <i class="fa-solid fa-filter"></i>
-            <span>Filter</span>
-            <i class="fa-solid fa-chevron-down filter-chevron"></i>
-          </div>
-          
-          <!-- Filter dropdown -->
-          <div class="filter-dropdown hidden" id="filterDropdown">
-            <button class="filter-dropdown-item" data-filter="Informatie over de donatieprocedure">
-              Informatie over de donatieprocedure
-            </button>
-            <button class="filter-dropdown-item" data-filter="Protocol informatie">
-              Protocol informatie
-            </button>
-            <button class="filter-dropdown-item" data-filter="Onderzoeksinformatie">
-              Onderzoeksinformatie
-            </button>
-            <button class="filter-dropdown-item" data-filter="PDF">
-              PDF
-            </button>
-            <button class="filter-dropdown-item" data-filter="Illustratie of infographic">
-              Illustratie of infographic
-            </button>
-            <button class="filter-dropdown-item" data-filter="Scholing en training">
-              Scholing en training
-            </button>
-          </div>
-        </div>
-
         <!-- Suggestions -->
         <div class="suggestions-row">
           <div class="suggestions-label-col">

@@ -311,19 +311,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--spacing-12) var(--spacing-24);
+  padding: var(--spacing-8) var(--spacing-24);
+  padding-bottom: var(--spacing-12);
   gap: var(--spacing-24);
-  transition: opacity var(--transition-normal), max-height var(--transition-normal);
-  max-height: 64px;
-  overflow: hidden;
 }
 
 .active-filters-bar.hidden {
-  opacity: 0;
-  max-height: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-  pointer-events: none;
+  display: none;
 }
 
 .active-filters-left {
@@ -412,6 +406,10 @@ body {
 
 .clear-filters-btn:hover {
   opacity: 1;
+}
+
+.clear-filters-btn.hidden {
+  display: none;
 }
 
 .clear-filters-btn i {
