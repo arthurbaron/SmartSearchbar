@@ -104,9 +104,9 @@ document.addEventListener('DOMContentLoaded', () => {
  */
 function initSearchInput() {
   searchInput.addEventListener('input', (e) => {
-    const value = e.target.value.trim();
+    const value = e.target.value; // Don't trim here, so spaces also count as typing
     
-    // Clear previous timer
+    // Clear previous timer for the Enter badge
     clearTimeout(typingTimer);
     
     if (value.length > 0) {
@@ -116,11 +116,17 @@ function initSearchInput() {
       }
       
       // Update suggestions based on input
-      updateSuggestions(value);
+      updateSuggestions(value.trim());
       
-      // Show enter badge and search controls after brief delay
+      // Show close button and active state IMMEDIATELY
+      clearBtn.classList.add('visible');
+      searchInputContainer.classList.add('active');
+      microphoneBtn.classList.add('hidden');
+      
+      // Show enter badge and divider after brief delay
       typingTimer = setTimeout(() => {
-        showSearchControls();
+        enterBadge.classList.add('visible');
+        searchDivider.classList.add('visible');
       }, TYPING_DELAY);
     } else {
       // Return to initial state

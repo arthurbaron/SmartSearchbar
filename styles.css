@@ -266,16 +266,16 @@ body {
 
 /* Close button - hidden by default, more specific to override .action-btn */
 .action-btn.close-btn {
-  display: none;
+  display: none !important;
 }
 
 .action-btn.close-btn.visible {
-  display: flex;
+  display: flex !important;
 }
 
 /* Microphone button - hide when typing */
 .action-btn.microphone-btn.hidden {
-  display: none;
+  display: none !important;
 }
 
 /* Active search state - solid border */
