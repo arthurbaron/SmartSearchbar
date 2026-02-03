@@ -255,27 +255,27 @@ body {
 .search-divider {
   display: none;
   width: 1px;
-  height: 28px;
+  height: 24px;
   background: var(--color-border);
-  margin: 0 12px;
+  margin: 0 4px;
 }
 
 .search-divider.visible {
   display: block;
 }
 
-/* Close button - hidden by default, more specific to override .action-btn */
+/* Close button - hidden by default */
 .action-btn.close-btn {
-  display: none !important;
+  display: none;
 }
 
 .action-btn.close-btn.visible {
-  display: flex !important;
+  display: flex;
 }
 
 /* Microphone button - hide when typing */
 .action-btn.microphone-btn.hidden {
-  display: none !important;
+  display: none;
 }
 
 /* Active search state - solid border */
