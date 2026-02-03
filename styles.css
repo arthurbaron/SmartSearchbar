@@ -316,8 +316,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--spacing-8) var(--spacing-24);
-  padding-bottom: var(--spacing-12);
+  padding: var(--spacing-12) var(--spacing-24);
   gap: var(--spacing-24);
 }
 
@@ -378,6 +377,7 @@ body {
 
 .active-filters-list {
   display: flex;
+  align-items: center;
   flex-wrap: nowrap;
   gap: var(--spacing-8);
   overflow-x: auto;
