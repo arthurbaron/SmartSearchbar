@@ -1,276 +1,346 @@
 <!DOCTYPE html>
 <html lang="nl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NTS AI Zoekbalk - Prototype</title>
+    <meta
+      name="description"
+      content="AI-powered search interface prototype for NTS"
+    />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NTS AI Zoekbalk - Prototype</title>
-  <meta name="description" content="AI-powered search interface prototype for NTS">
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
 
-  <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="styles.css">
-</head>
+  <body>
+    <div class="app-container">
+      <div class="search-card">
+        <!-- Search Bar (always visible) -->
+        <div class="search-bar">
+          <div class="search-input-container" id="searchInputContainer">
+            <!-- Search Icon -->
+            <span class="search-icon">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </span>
 
-<body>
-  <div class="app-container">
-    <div class="search-card">
+            <div class="search-input-wrapper">
+              <input
+                type="text"
+                class="search-input"
+                id="searchInput"
+                placeholder="Zoek hier naar pagina of stel een specifieke vraag, zoals 'wanneer kan ik het NTS bellen?'"
+                autocomplete="off"
+              />
+            </div>
 
-      <!-- Search Bar (always visible) -->
-      <div class="search-bar">
-        <div class="search-input-container" id="searchInputContainer">
-          <!-- Search Icon -->
-          <span class="search-icon">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </span>
+            <div class="search-actions">
+              <!-- Microphone icon -->
+              <button
+                class="action-btn microphone-btn"
+                aria-label="Voice search"
+                id="microphoneBtn"
+              >
+                <i class="fa-solid fa-microphone"></i>
+              </button>
+              <!-- Clear button (X) -->
+              <button
+                class="action-btn close-btn"
+                aria-label="Clear search"
+                id="clearBtn"
+              >
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+              <span class="search-divider" id="searchDivider"></span>
+              <!-- Enter badge (appears while typing) -->
+              <div class="enter-badge" id="enterBadge">
+                <i class="fa-solid fa-arrow-turn-down fa-rotate-90"></i>
+                <span>Enter</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-          <div class="search-input-wrapper">
-            <input type="text" class="search-input" id="searchInput"
-              placeholder="Zoek hier naar pagina of stel een specifieke vraag, zoals 'wanneer kan ik het NTS bellen?'"
-              autocomplete="off">
+        <!-- Active Filters Bar (visible when filters are active) -->
+        <div class="active-filters-bar hidden" id="activeFiltersBar">
+          <div class="active-filters-left">
+            <!-- Filter button with dropdown -->
+            <div class="filter-button-container" id="filterButtonContainer">
+              <div class="filter-button" id="filterButton">
+                <i class="fa-solid fa-filter"></i>
+                <span>Filter</span>
+                <i class="fa-solid fa-chevron-down filter-chevron"></i>
+              </div>
+
+              <!-- Filter dropdown -->
+              <div class="filter-dropdown hidden" id="filterDropdown">
+                <button
+                  class="filter-dropdown-item"
+                  data-filter="Informatie over de donatieprocedure"
+                >
+                  Informatie over de donatieprocedure
+                </button>
+                <button
+                  class="filter-dropdown-item"
+                  data-filter="Protocol informatie"
+                >
+                  Protocol informatie
+                </button>
+                <button
+                  class="filter-dropdown-item"
+                  data-filter="Onderzoeksinformatie"
+                >
+                  Onderzoeksinformatie
+                </button>
+                <button class="filter-dropdown-item" data-filter="PDF">
+                  PDF
+                </button>
+                <button
+                  class="filter-dropdown-item"
+                  data-filter="Illustratie of infographic"
+                >
+                  Illustratie of infographic
+                </button>
+                <button
+                  class="filter-dropdown-item"
+                  data-filter="Scholing en training"
+                >
+                  Scholing en training
+                </button>
+              </div>
+            </div>
+
+            <div
+              class="active-filters-list-wrapper"
+              id="activeFiltersListWrapper"
+            >
+              <div class="active-filters-list" id="activeFiltersList">
+                <!-- Active filter pills will be inserted here -->
+              </div>
+            </div>
+          </div>
+          <button class="clear-filters-btn hidden" id="clearFiltersBtn">
+            <i class="fa-solid fa-xmark"></i>
+            <span>Filters uitzetten</span>
+          </button>
+        </div>
+
+        <!-- SCREEN 1: Filter Tags (Initial State) -->
+        <div class="filter-section" id="filterSection">
+          <p class="filter-label">
+            Specificeer wat je zoekt, voor betere resultaten
+          </p>
+          <div class="filter-tags">
+            <button class="filter-tag">
+              <span>Informatie over de donatieprocedure</span>
+            </button>
+            <button class="filter-tag">
+              <span>Protocol informatie</span>
+            </button>
+            <button class="filter-tag">
+              <span>Onderzoeksinformatie</span>
+            </button>
+            <button class="filter-tag">
+              <span>PDF</span>
+            </button>
+            <button class="filter-tag">
+              <span>Illustratie of infographic</span>
+            </button>
+            <button class="filter-tag">
+              <span>Scholing en training</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- SCREEN 2: Suggestions Dropdown -->
+        <div class="suggestions-section" id="suggestionsSection">
+          <!-- Suggestions -->
+          <div class="suggestions-row">
+            <div class="suggestions-label-col">
+              <span class="section-label">Suggesties</span>
+            </div>
+            <div class="suggestions-content-col">
+              <div class="suggestion-item" data-query="Donatie bij leven">
+                <strong>Donatie bij</strong> leven
+              </div>
+              <div class="suggestion-item" data-query="Donatie bij overlijden">
+                <strong>Donatie bij</strong> overlijden
+              </div>
+              <div class="suggestion-item" data-query="Donatie bij aanrijding">
+                <strong>Donatie bij</strong> aanrijding
+              </div>
+            </div>
           </div>
 
-          <div class="search-actions">
-            <!-- Microphone icon -->
-            <button class="action-btn microphone-btn" aria-label="Voice search" id="microphoneBtn">
-              <i class="fa-solid fa-microphone"></i>
-            </button>
-            <!-- Clear button (X) -->
-            <button class="action-btn close-btn" aria-label="Clear search" id="clearBtn">
-              <i class="fa-solid fa-xmark"></i>
-            </button>
-            <span class="search-divider" id="searchDivider"></span>
-            <!-- Enter badge (appears while typing) -->
-            <div class="enter-badge" id="enterBadge">
+          <!-- Divider -->
+          <div class="suggestions-divider"></div>
+
+          <!-- Quick links -->
+          <div class="suggestions-row">
+            <div class="suggestions-label-col">
+              <span class="section-label">Quick links</span>
+            </div>
+            <div class="suggestions-content-col">
+              <a href="#" class="quick-link-item">
+                <i class="fa-solid fa-link link-icon"></i>
+                <span
+                  >Veelgestelde vragen over
+                  <strong>donatie bij</strong> leven</span
+                >
+                <i class="fa-solid fa-arrow-right arrow-icon"></i>
+              </a>
+              <a href="#" class="quick-link-item">
+                <i class="fa-solid fa-link link-icon"></i>
+                <span><strong>Donatie bij</strong> leven</span>
+                <i class="fa-solid fa-arrow-right arrow-icon"></i>
+              </a>
+              <a href="#" class="quick-link-item">
+                <i class="fa-solid fa-link link-icon"></i>
+                <span
+                  >Voor-en nadelen van <strong>donatie bij</strong> leven</span
+                >
+                <i class="fa-solid fa-arrow-right arrow-icon"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="suggestions-footer">
+            <span>Druk op</span>
+            <div class="enter-badge-footer">
               <i class="fa-solid fa-arrow-turn-down fa-rotate-90"></i>
               <span>Enter</span>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Active Filters Bar (visible when filters are active) -->
-      <div class="active-filters-bar hidden" id="activeFiltersBar">
-        <div class="active-filters-left">
-          <!-- Filter button with dropdown -->
-          <div class="filter-button-container" id="filterButtonContainer">
-            <div class="filter-button" id="filterButton">
-              <i class="fa-solid fa-filter"></i>
-              <span>Filter</span>
-              <i class="fa-solid fa-chevron-down filter-chevron"></i>
-            </div>
-            
-            <!-- Filter dropdown -->
-            <div class="filter-dropdown hidden" id="filterDropdown">
-              <button class="filter-dropdown-item" data-filter="Informatie over de donatieprocedure">
-                Informatie over de donatieprocedure
-              </button>
-              <button class="filter-dropdown-item" data-filter="Protocol informatie">
-                Protocol informatie
-              </button>
-              <button class="filter-dropdown-item" data-filter="Onderzoeksinformatie">
-                Onderzoeksinformatie
-              </button>
-              <button class="filter-dropdown-item" data-filter="PDF">
-                PDF
-              </button>
-              <button class="filter-dropdown-item" data-filter="Illustratie of infographic">
-                Illustratie of infographic
-              </button>
-              <button class="filter-dropdown-item" data-filter="Scholing en training">
-                Scholing en training
-              </button>
-            </div>
-          </div>
-          
-          <div class="active-filters-list-wrapper" id="activeFiltersListWrapper">
-            <div class="active-filters-list" id="activeFiltersList">
-              <!-- Active filter pills will be inserted here -->
-            </div>
-          </div>
-        </div>
-        <button class="clear-filters-btn hidden" id="clearFiltersBtn">
-          <i class="fa-solid fa-xmark"></i>
-          <span>Filters uitzetten</span>
-        </button>
-      </div>
-
-      <!-- SCREEN 1: Filter Tags (Initial State) -->
-      <div class="filter-section" id="filterSection">
-        <p class="filter-label">Specificeer wat je zoekt, voor betere resultaten</p>
-        <div class="filter-tags">
-          <button class="filter-tag">
-            <span>Informatie over de donatieprocedure</span>
-          </button>
-          <button class="filter-tag">
-            <span>Protocol informatie</span>
-          </button>
-          <button class="filter-tag">
-            <span>Onderzoeksinformatie</span>
-          </button>
-          <button class="filter-tag">
-            <span>PDF</span>
-          </button>
-          <button class="filter-tag">
-            <span>Illustratie of infographic</span>
-          </button>
-          <button class="filter-tag">
-            <span>Scholing en training</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- SCREEN 2: Suggestions Dropdown -->
-      <div class="suggestions-section" id="suggestionsSection">
-        <!-- Suggestions -->
-        <div class="suggestions-row">
-          <div class="suggestions-label-col">
-            <span class="section-label">Suggesties</span>
-          </div>
-          <div class="suggestions-content-col">
-            <div class="suggestion-item" data-query="Donatie bij leven">
-              <strong>Donatie bij</strong> leven
-            </div>
-            <div class="suggestion-item" data-query="Donatie bij overlijden">
-              <strong>Donatie bij</strong> overlijden
-            </div>
-            <div class="suggestion-item" data-query="Donatie bij aanrijding">
-              <strong>Donatie bij</strong> aanrijding
-            </div>
+            <span>voor alle resultaten</span>
           </div>
         </div>
 
-        <!-- Divider -->
-        <div class="suggestions-divider"></div>
-
-        <!-- Quick links -->
-        <div class="suggestions-row">
-          <div class="suggestions-label-col">
-            <span class="section-label">Quick links</span>
-          </div>
-          <div class="suggestions-content-col">
-            <a href="#" class="quick-link-item">
-              <i class="fa-solid fa-link link-icon"></i>
-              <span>Veelgestelde vragen over <strong>donatie bij</strong> leven</span>
-              <i class="fa-solid fa-arrow-right arrow-icon"></i>
-            </a>
-            <a href="#" class="quick-link-item">
-              <i class="fa-solid fa-link link-icon"></i>
-              <span><strong>Donatie bij</strong> leven</span>
-              <i class="fa-solid fa-arrow-right arrow-icon"></i>
-            </a>
-            <a href="#" class="quick-link-item">
-              <i class="fa-solid fa-link link-icon"></i>
-              <span>Voor-en nadelen van <strong>donatie bij</strong> leven</span>
-              <i class="fa-solid fa-arrow-right arrow-icon"></i>
-            </a>
-          </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="suggestions-footer">
-          <span>Druk op</span>
-          <div class="enter-badge-footer">
-            <i class="fa-solid fa-arrow-turn-down fa-rotate-90"></i>
-            <span>Enter</span>
-          </div>
-          <span>voor alle resultaten</span>
-        </div>
-      </div>
-
-      <!-- SCREEN 3: Results View -->
-      <div class="results-section" id="resultsSection">
-        <div class="main-result">
-          <h1 class="result-title">'Wanneer mag een levend persoon een lever doneren?'</h1>
-          <p class="result-intro">
-            Het volgende is op de NTS terug te vinden over wanneer iemand een lever mag doneren. Dit zijn wel algemene indicaties, deze gelden dus primair als landelijk kader.
-          </p>
-
-          <div class="ai-answer">
-            <p>
-              Je kunt niet zomaar een deel van je lever geven aan een ander. Er zijn wettelijke regels om jou te beschermen en zorgen voor een veilige en verantwoorde levertransplantatie. En je krijgt onderzoeken om te kijken of je lichamelijk gezond genoeg bent, en of je de donatie psychisch goed aankan.
+        <!-- SCREEN 3: Results View -->
+        <div class="results-section" id="resultsSection">
+          <div class="main-result">
+            <h1 class="result-title">
+              'Wanneer mag een levend persoon een lever doneren?'
+            </h1>
+            <p class="result-intro">
+              Het volgende is op de NTS terug te vinden over wanneer iemand een
+              lever mag doneren. Dit zijn wel algemene indicaties, deze gelden
+              dus primair als landelijk kader.
             </p>
 
-            <h4>Algemene voorwaarden</h4>
-            <ul>
-              <li>Je bent 18 jaar of ouder.</li>
-              <li>Je kunt zelf goed uitleggen wat je wilt.</li>
-              <li>Je hebt vrijwillig besloten om een deel van je lever te geven. Niemand heeft je onder druk gezet en je krijgt er geen geld of cadeaus voor.</li>
-              <li>Je bent gezond genoeg en in goede conditie.</li>
-              <li>Je bent niet verslaafd aan alcohol of drugs.</li>
-              <li>Je hebt geen leverziekte, bloedziekte, nierziekte of problemen met je bloedstolling.</li>
-              <li>Je hebt geen (erfelijke) ziekte waardoor je lever later misschien slechter gaat werken.</li>
-              <li>Je bent niet zwanger.</li>
-            </ul>
+            <div class="ai-answer">
+              <p>
+                Je kunt niet zomaar een deel van je lever geven aan een ander.
+                Er zijn wettelijke regels om jou te beschermen en zorgen voor
+                een veilige en verantwoorde levertransplantatie. En je krijgt
+                onderzoeken om te kijken of je lichamelijk gezond genoeg bent,
+                en of je de donatie psychisch goed aankan.
+              </p>
 
-            <!-- Highlighted Card inside AI answer -->
-            <div class="highlighted-card">
+              <h4>Algemene voorwaarden</h4>
+              <ul>
+                <li>Je bent 18 jaar of ouder.</li>
+                <li>Je kunt zelf goed uitleggen wat je wilt.</li>
+                <li>
+                  Je hebt vrijwillig besloten om een deel van je lever te geven.
+                  Niemand heeft je onder druk gezet en je krijgt er geen geld of
+                  cadeaus voor.
+                </li>
+                <li>Je bent gezond genoeg en in goede conditie.</li>
+                <li>Je bent niet verslaafd aan alcohol of drugs.</li>
+                <li>
+                  Je hebt geen leverziekte, bloedziekte, nierziekte of problemen
+                  met je bloedstolling.
+                </li>
+                <li>
+                  Je hebt geen (erfelijke) ziekte waardoor je lever later
+                  misschien slechter gaat werken.
+                </li>
+                <li>Je bent niet zwanger.</li>
+              </ul>
+
+              <!-- Highlighted Card inside AI answer -->
+              <div class="highlighted-card">
+                <div class="card-header">
+                  <span class="card-icon"
+                    ><i class="fa-solid fa-link"></i
+                  ></span>
+                  <span class="card-title">Leverdonatie bij leven</span>
+                </div>
+                <p class="card-description">
+                  Informatie voor mensen die overwegen bij leven een deel van
+                  hun lever te doneren.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div class="results-divider"></div>
+
+          <!-- Related Results -->
+          <div class="related-section">
+            <h2 class="related-title">Andere relevante resultaten</h2>
+
+            <div class="related-card">
               <div class="card-header">
                 <span class="card-icon"><i class="fa-solid fa-link"></i></span>
-                <span class="card-title">Leverdonatie bij leven</span>
+                <span class="card-title">Samenwerken en de NTS</span>
               </div>
               <p class="card-description">
-                Informatie voor mensen die overwegen bij leven een deel van hun lever te doneren.
+                Op deze pagina vind je een overzicht van de belangrijkste
+                protocollen. Lees meer over het cross-overprogramma en bekijk
+                welke voorlichting, vergoedingen en scholing er zijn vanuit de
+                NTS.
+              </p>
+            </div>
+
+            <div class="related-card">
+              <div class="card-header">
+                <span class="card-icon"><i class="fa-solid fa-link"></i></span>
+                <span class="card-title">Samenwerken en de NTS</span>
+              </div>
+              <p class="card-description">
+                Op deze pagina vind je een overzicht van de belangrijkste
+                protocollen. Lees meer over het cross-overprogramma en bekijk
+                welke voorlichting, vergoedingen en scholing er zijn vanuit de
+                NTS.
               </p>
             </div>
           </div>
-        </div>
 
-        <!-- Divider -->
-        <div class="results-divider"></div>
+          <!-- Divider -->
+          <div class="results-divider"></div>
 
-        <!-- Related Results -->
-        <div class="related-section">
-          <h2 class="related-title">Andere relevante resultaten</h2>
-
-          <div class="related-card">
-            <div class="card-header">
-              <span class="card-icon"><i class="fa-solid fa-link"></i></span>
-              <span class="card-title">Samenwerken en de NTS</span>
-            </div>
-            <p class="card-description">
-              Op deze pagina vind je een overzicht van de belangrijkste protocollen. Lees meer over het cross-overprogramma en bekijk welke voorlichting, vergoedingen en scholing er zijn vanuit de NTS.
-            </p>
-          </div>
-
-          <div class="related-card">
-            <div class="card-header">
-              <span class="card-icon"><i class="fa-solid fa-link"></i></span>
-              <span class="card-title">Samenwerken en de NTS</span>
-            </div>
-            <p class="card-description">
-              Op deze pagina vind je een overzicht van de belangrijkste protocollen. Lees meer over het cross-overprogramma en bekijk welke voorlichting, vergoedingen en scholing er zijn vanuit de NTS.
-            </p>
-          </div>
-        </div>
-
-        <!-- Divider -->
-        <div class="results-divider"></div>
-
-        <!-- Bottom Search -->
-        <div class="bottom-search">
-          <p class="bottom-search-label">Is dit niet wat je zoekt?</p>
-          <div class="bottom-search-bar">
-            <span>Specificeer je zoekopdracht</span>
-            <div class="bottom-search-input-wrapper">
-              <span class="bottom-search-icon">
-                <i class="fa-solid fa-magnifying-glass"></i>
-              </span>
-              <input type="text" class="bottom-search-input" placeholder="'ik zoek een pdf met ...'">
-              <button class="action-btn" aria-label="Voice search">
-                <i class="fa-solid fa-microphone"></i>
-              </button>
+          <!-- Bottom Search -->
+          <div class="bottom-search">
+            <p class="bottom-search-label">Is dit niet wat je zoekt?</p>
+            <div class="bottom-search-bar">
+              <span>Specificeer je zoekopdracht</span>
+              <div class="bottom-search-input-wrapper">
+                <span class="bottom-search-icon">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+                <input
+                  type="text"
+                  class="bottom-search-input"
+                  placeholder="'ik zoek een pdf met ...'"
+                />
+                <button class="action-btn" aria-label="Voice search">
+                  <i class="fa-solid fa-microphone"></i>
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
     </div>
-  </div>
 
-  <script src="app.js"></script>
-</body>
-
+    <script src="app.js"></script>
+  </body>
 </html>

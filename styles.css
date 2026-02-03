@@ -229,15 +229,14 @@ body {
   color: var(--color-midnight-blue);
   white-space: nowrap;
   cursor: pointer;
-  transition: background var(--transition-fast),
-    transform var(--transition-fast);
+  transition: background var(--transition-fast), transform var(--transition-fast);
 }
 
 .enter-badge.visible {
   display: flex;
 }
 
-.enter-badge:hover {
+.enter-badge:hover, .enter-badge.selected {
   background: #cfdff5;
   transform: translateY(-1px);
 }
@@ -249,6 +248,21 @@ body {
 .enter-badge i {
   font-size: 12px;
   color: var(--color-navy);
+}
+
+/* Suggestion & Quick Link Selected State (Keyboard) */
+.suggestion-item.selected, .quick-link-item.selected {
+  background: var(--color-blue-100);
+  border-radius: var(--radius-md);
+  padding-left: var(--spacing-8);
+  padding-right: var(--spacing-8);
+  margin-left: -8px;
+  margin-right: -8px;
+}
+
+.quick-link-item.selected .arrow-icon {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 /* Search divider (vertical line) */

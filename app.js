@@ -13,6 +13,7 @@ const AppState = {
 let currentState = AppState.INITIAL;
 let typingTimer = null;
 const TYPING_DELAY = 100; // ms before showing enter badge
+let selectedIndex = -1; // For keyboard navigation
 
 // Active filters state
 let activeFilters = [];
@@ -544,11 +545,9 @@ function updateDropdownItemsState() {
  */
 function initKeyboardNavigation() {
   document.addEventListener("keydown", (e) => {
-    // Enter key - go to results
-    if (e.key === "Enter" && currentState === AppState.SUGGESTIONS) {
-      e.preventDefault();
-      transitionTo(AppState.RESULTS);
-    }
+    const focusableItems = Array.from(
+      suggestionsSection.querySelectorAll(".suggestion-item, .quick-link-item")
+    );
 
     // Escape key - go back
     if (e.key === "Escape") {
@@ -558,6 +557,41 @@ function initKeyboardNavigation() {
         searchInput.value = "";
         hideSearchControls();
         transitionTo(AppState.INITIAL);
+      }
+      return;
+    }
+
+    // Results state: only Escape is handled here
+    if (currentState === AppState.RESULTS) return;
+
+    // Tab or Arrow keys navigation
+    if (e.key === "Tab" || e.key === "ArrowDown" || e.key === "ArrowUp") {
+      if (currentState !== AppState.SUGGESTIONS) return;
+
+      e.preventDefault();
+
+      if (e.key === "ArrowUp" || (e.key === "Tab" && e.shiftKey)) {
+        selectedIndex =
+          selectedIndex <= 0 ? focusableItems.length - 1 : selectedIndex - 1;
+      } else {
+        selectedIndex =
+          selectedIndex >= focusableItems.length - 1 ? 0 : selectedIndex + 1;
+      }
+
+      updateSelectedFocus(focusableItems);
+    }
+
+    // Enter key
+    if (e.key === "Enter") {
+      if (selectedIndex >= 0 && focusableItems[selectedIndex]) {
+        e.preventDefault();
+        focusableItems[selectedIndex].click();
+      } else if (
+        currentState === AppState.SUGGESTIONS &&
+        searchInput.value.trim().length > 0
+      ) {
+        e.preventDefault();
+        transitionTo(AppState.RESULTS);
       }
     }
   });
@@ -571,11 +605,32 @@ function initKeyboardNavigation() {
 }
 
 /**
+ * Update selected focus for keyboard navigation
+ */
+function updateSelectedFocus(items) {
+  items.forEach((item, index) => {
+    if (index === selectedIndex) {
+      item.classList.add("selected");
+      // Ensure the item is visible in case of many suggestions
+      item.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    } else {
+      item.classList.remove("selected");
+    }
+  });
+}
+
+/**
  * State Transition Handler
  * Manages smooth transitions between screens
  */
 function transitionTo(newState) {
   if (currentState === newState) return;
+
+  // Reset selected index when transitioning
+  selectedIndex = -1;
+  document
+    .querySelectorAll(".suggestion-item.selected, .quick-link-item.selected")
+    .forEach((el) => el.classList.remove("selected"));
 
   // Update search input based on state
   if (newState === AppState.RESULTS) {
