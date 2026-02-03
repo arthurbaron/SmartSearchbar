@@ -5,32 +5,32 @@
 
 /* Roobert Font Family */
 @font-face {
-  font-family: 'Roobert';
-  src: url('fonts/Roobert-Regular.otf') format('opentype');
+  font-family: "Roobert";
+  src: url("fonts/Roobert-Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Roobert';
-  src: url('fonts/Roobert-Medium.otf') format('opentype');
+  font-family: "Roobert";
+  src: url("fonts/Roobert-Medium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Roobert';
-  src: url('fonts/Roobert-SemiBold.otf') format('opentype');
+  font-family: "Roobert";
+  src: url("fonts/Roobert-SemiBold.otf") format("opentype");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Roobert';
-  src: url('fonts/Roobert-Bold.otf') format('opentype');
+  font-family: "Roobert";
+  src: url("fonts/Roobert-Bold.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -61,7 +61,8 @@
   --radius-full: 999px;
 
   /* Typography */
-  --font-family: 'Roobert', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family: "Roobert", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
   --font-size-sm: 14px;
   --font-size-md: 16px;
   --font-size-input: 18px;
@@ -74,7 +75,8 @@
   --transition-slow: 400ms ease;
 
   /* Shadows - from Figma */
-  --shadow-card: 0px 20px 25px -5px rgba(0, 0, 0, 0.1), 0px 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-card: 0px 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0px 10px 10px -5px rgba(0, 0, 0, 0.04);
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -112,22 +114,30 @@ body {
 
 /* Decorative background shapes */
 .app-container::before {
-  content: '';
+  content: "";
   position: absolute;
   width: 800px;
   height: 800px;
-  background: radial-gradient(ellipse, rgba(223, 233, 250, 0.6) 0%, transparent 70%);
+  background: radial-gradient(
+    ellipse,
+    rgba(223, 233, 250, 0.6) 0%,
+    transparent 70%
+  );
   top: -200px;
   right: -200px;
   pointer-events: none;
 }
 
 .app-container::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 600px;
   height: 600px;
-  background: radial-gradient(ellipse, rgba(223, 233, 250, 0.5) 0%, transparent 70%);
+  background: radial-gradient(
+    ellipse,
+    rgba(223, 233, 250, 0.5) 0%,
+    transparent 70%
+  );
   bottom: -100px;
   left: -100px;
   pointer-events: none;
@@ -219,7 +229,8 @@ body {
   color: var(--color-midnight-blue);
   white-space: nowrap;
   cursor: pointer;
-  transition: background var(--transition-fast), transform var(--transition-fast);
+  transition: background var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .enter-badge.visible {
@@ -292,7 +303,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background var(--transition-fast), transform var(--transition-fast);
+  transition: background var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .action-btn:hover {
@@ -359,13 +371,17 @@ body {
 
 /* Fade gradient on the right side */
 .active-filters-list-wrapper::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   right: 0;
   width: 80px;
   height: 100%;
-  background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
   pointer-events: none;
   opacity: 0;
   transition: opacity var(--transition-fast);
@@ -466,7 +482,8 @@ body {
   padding: 0 var(--spacing-24);
   padding-bottom: var(--spacing-12);
   margin-top: var(--spacing-24);
-  transition: opacity var(--transition-normal), transform var(--transition-normal);
+  transition: opacity var(--transition-normal),
+    transform var(--transition-normal);
 }
 
 .filter-section.hidden {
@@ -535,7 +552,8 @@ body {
   pointer-events: none;
   position: absolute;
   width: 100%;
-  transition: opacity var(--transition-normal), transform var(--transition-normal);
+  transition: opacity var(--transition-normal),
+    transform var(--transition-normal);
 }
 
 .suggestions-section.visible {
@@ -749,7 +767,8 @@ body {
   font-size: var(--font-size-sm);
   color: var(--color-midnight-blue);
   cursor: pointer;
-  transition: background var(--transition-fast), transform var(--transition-fast);
+  transition: background var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .enter-badge-footer:hover {
@@ -778,7 +797,8 @@ body {
   pointer-events: none;
   position: absolute;
   width: 100%;
-  transition: opacity var(--transition-normal), transform var(--transition-normal);
+  transition: opacity var(--transition-normal),
+    transform var(--transition-normal);
 }
 
 .results-section.visible {
@@ -811,7 +831,11 @@ body {
 
 /* AI Answer Box */
 .ai-answer {
-  background: linear-gradient(to bottom, rgba(198, 217, 247, 0) 0%, rgba(198, 217, 247, 0.1) 100%);
+  background: linear-gradient(
+    to bottom,
+    rgba(198, 217, 247, 0) 0%,
+    rgba(198, 217, 247, 0.1) 100%
+  );
   border-left: 2px solid rgba(23, 15, 61, 0.2);
   padding: var(--spacing-16) var(--spacing-24);
   padding-bottom: 0;
@@ -858,7 +882,8 @@ body {
   margin-bottom: calc(-1 * var(--spacing-16));
   box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  transition: transform var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .highlighted-card:hover {
@@ -924,7 +949,8 @@ body {
   margin-bottom: var(--spacing-16);
   box-shadow: 3px 3px 1px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  transition: transform var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .related-card:hover {
@@ -1073,12 +1099,93 @@ body {
     padding: var(--spacing-12) 0;
   }
 
+  /* Search Bar adjustments */
+  .search-bar {
+    padding: 0 var(--spacing-16);
+  }
+
+  .search-input-container {
+    padding: var(--spacing-8) 0;
+  }
+
+  /* Filter Tags adjustments */
+  .filter-section {
+    padding: 0 var(--spacing-16);
+  }
+
   .filter-tags {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--spacing-8);
   }
 
   .filter-tag {
+    width: fit-content;
+    justify-content: flex-start;
+    padding: var(--spacing-4) var(--spacing-12);
+  }
+
+  /* Active Filters Bar */
+  .active-filters-bar {
+    padding: var(--spacing-12) var(--spacing-16);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-12);
+  }
+
+  .active-filters-left {
     width: 100%;
-    justify-content: center;
+  }
+
+  .clear-filters-btn {
+    align-self: flex-end;
+  }
+
+  /* Two-column to Single-column */
+  .suggestions-section {
+    padding: 0 var(--spacing-16);
+  }
+
+  .suggestions-row {
+    flex-direction: column;
+    gap: var(--spacing-8);
+  }
+
+  .suggestions-label-col {
+    width: auto;
+  }
+
+  .section-label {
+    line-height: 24px;
+  }
+
+  /* Results View */
+  .results-section {
+    padding: 0 var(--spacing-16) var(--spacing-24);
+  }
+
+  .ai-answer {
+    padding: var(--spacing-16);
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .highlighted-card {
+    margin-left: calc(-1 * var(--spacing-16));
+    margin-right: calc(-1 * var(--spacing-16));
+  }
+
+  .bottom-search-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-16);
+  }
+
+  .bottom-search-bar > span {
+    white-space: normal;
+  }
+
+  .bottom-search-input-wrapper {
+    width: 100%;
   }
 }
